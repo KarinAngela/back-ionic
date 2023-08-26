@@ -1,35 +1,24 @@
 package controllers;
+
+import dto.DTODadosLogin;
+import models.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import repositorios.UsuarioRepository;
 
 @RestController
 @Controller
-@RequestMapping("/auth")
+@RequestMapping("/login")
 public class AutenticacaoController {
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
-//    @Autowired
-//    AuthenticationManager authenticationManager;
-//
-//    @Autowired
-//    private TokenService tokenService;
-
-//    @PostMapping("/login")
-//    public String login(@RequestBody DTOLogin dadosLogin) {
-//        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-//                new UsernamePasswordAuthenticationToken(dadosLogin.login(), dadosLogin.senha());
-//
-//        Authentication authentication =
-//                this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-//
-//        var usuario = (Usuario) authentication.getPrincipal();
-//
-//        return tokenService.gerarToken(usuario);
-//    }
+    @PostMapping
+    public Usuario login(@RequestBody DTODadosLogin dadosLogin) {
+        return usuarioRepository.findByEmail(dadosLogin.email());
+    }
 }

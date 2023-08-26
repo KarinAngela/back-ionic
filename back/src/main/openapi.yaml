@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: Backend Ionic
+  description: Backend Ionic
+  version: 1.0.0
+servers:
+  - url: 'https://localhost:8080'
+paths:
+  /login:
+    post:
+      operationId: fazer-login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DadosLogin'
+      responses:
+        200:
+          description: Login efetuado com sucesso
+          content:
+            application/json:
+              schema:
+                properties:
+                  token:
+                    type: string
+        400:
+          description: Login ou senha invalidos
+  /chamados:
+    get:
+      description: Listar chamados realizados pelo usuario logado
+      responses:
+        200:
+          description: Requisição efetuada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Chamado'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+    post:
+      description: Inserir um novo chamado
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Chamado'
+      responses:
+        201:
+          description: Chamado criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chamado'
+        400:
+          description: Dados do chamado inválidos
+  /chamados/{id}:
+    get:
+      description: Visualizar um chamado
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        200:
+          description: Requisição bem sucedida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chamado'
+        404:
+          description: Chamado não encontrado
+    put:
+      description: Atualizar um chamado
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Chamado'
+      responses:
+        200:
+          description: Chamado atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chamado'
+        400:
+          description: Dados do chamado invalidos
+        404:
+          description: Chamado não encontrado
+    delete:
+      description: Apagar um chamado
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        204:
+          description: Chamado apagado com sucesso
+        404:
+          description: Chamado não encontrado
+components:
+  responses:
+    UnauthorizedError:
+      description: Token de acesso inválido ou faltando
+  schemas:
+    DadosLogin:
+      type: object
+      required:
+        - email
+        - senha
+      properties:
+        email:
+          type: string
+          format: email
+        senha:
+          type: string
+          format: password
+    Chamado:
+      type: object
+      required:
+        - descricao_problema
+        - prioridade
+        - titulo_chamado
+        - status_chamado
+        - lat
+        - lng
+      properties:
+        foto_problema:
+          type: string
+          maxLength: 220
+        descricao_problema:
+          type: string
+          maxLength: 500
+        prioridade:
+          type: string
+          enum:
+            - BAIXA
+            - MEDIA
+            - ALTA
+        titulo_chamado:
+          type: string
+          maxLength: 150
+        status_chamado:
+          type: string
+          enum:
+            - PENDENTE
+            - RESOLVIDO
+        lat:
+          type: number
+        lng:
+          type: number

@@ -1,9 +1,6 @@
 package dto;
 
-public record DTOUsuario(
+public record DTODadosLogin(
         String email,
         String senha
-
-
-) {
-}
+) {}
