@@ -4,17 +4,11 @@ import ionic.back.enums.Prioridade;
 import ionic.back.enums.StatusChamado;
 
 public record DTOChamado(
-        String foto_problema,
-        String descricao_problema,
-        String titulo_chamado,
+        String fotoProblema,
+        String descricaoProblema,
+        String tituloChamado,
         Prioridade prioridade,
-        StatusChamado status_chamado,
+        StatusChamado statusChamado,
         float lat,
         float lng) {
 }
-
-
-
-
-
-

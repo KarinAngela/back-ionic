@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Table(name = "chamados") //nome da tabela
-@Entity(name =  "Chamado") //nome da entidade
+@Entity(name = "Chamado") //nome da entidade
 @Getter //Gerando os metodos getters
 @NoArgsConstructor //Gerando os constructor nas entidades
 @AllArgsConstructor //Recebendo todos os campo
@@ -20,44 +20,36 @@ public class Chamado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    public String foto_problema;
-    public String descricao_problema;
+    public String fotoProblema;
+    public String descricaoProblema;
     @Enumerated(EnumType.STRING)
     public Prioridade prioridade;
-    public String titulo_chamado;
+    public String tituloChamado;
     @Enumerated(EnumType.STRING)
-    public StatusChamado status_chamado;
+    public StatusChamado statusChamado;
     public float lat;
     public float lng;
+    public Integer idUsuario;
 
-    public Chamado(Integer id, String foto_problema, String descricao_problema, Prioridade prioridade, String titulo_chamado, StatusChamado status_chamado, Long lat, Long lng) {
-        this.id = id;
-        this.foto_problema = foto_problema;
-        this.descricao_problema = descricao_problema;
-        this.prioridade = prioridade;
-        this.titulo_chamado = titulo_chamado;
-        this.status_chamado = status_chamado;
-        this.lat = lat;
-        this.lng = lng;
-    }
-
-    public Chamado(DTOChamado dadosChamado) {
-        this.foto_problema = dadosChamado.foto_problema();
-        this.descricao_problema = dadosChamado.descricao_problema();
+    public Chamado(DTOChamado dadosChamado, Integer idUsuario) {
+        this.fotoProblema = dadosChamado.fotoProblema();
+        this.descricaoProblema = dadosChamado.descricaoProblema();
         this.prioridade = dadosChamado.prioridade();
-        this.titulo_chamado = dadosChamado.titulo_chamado();
-        this.status_chamado = dadosChamado.status_chamado();
+        this.tituloChamado = dadosChamado.tituloChamado();
+        this.statusChamado = dadosChamado.statusChamado();
         this.lat = dadosChamado.lat();
         this.lng = dadosChamado.lng();
+        this.idUsuario = idUsuario;
     }
 
-    public void update(DTOChamado dadosChamado) {
-        this.foto_problema = dadosChamado.foto_problema();
-        this.descricao_problema = dadosChamado.descricao_problema();
+    public void update(DTOChamado dadosChamado, Integer idUsuario) {
+        this.fotoProblema = dadosChamado.fotoProblema();
+        this.descricaoProblema = dadosChamado.descricaoProblema();
         this.prioridade = dadosChamado.prioridade();
-        this.titulo_chamado = dadosChamado.titulo_chamado();
-        this.status_chamado = dadosChamado.status_chamado();
+        this.tituloChamado = dadosChamado.tituloChamado();
+        this.statusChamado = dadosChamado.statusChamado();
         this.lat = dadosChamado.lat();
         this.lng = dadosChamado.lng();
+        this.idUsuario = idUsuario;
     }
 }

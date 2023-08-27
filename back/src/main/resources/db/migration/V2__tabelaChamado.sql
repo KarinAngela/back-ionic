@@ -7,5 +7,7 @@ create table chamados(
     status_chamado ENUM('PENDENTE','RESOLVIDO') NOT NULL,
     lat DECIMAL(10, 8) NOT NULL,
     lng DECIMAL(11, 8) NOT NULL,
-    PRIMARY KEY (id)
+    id_usuario INT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
 );

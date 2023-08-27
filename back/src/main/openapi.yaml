@@ -6,9 +6,8 @@ info:
 servers:
   - url: 'https://localhost:8080'
 paths:
-  /login:
+  /auth/login:
     post:
-      operationId: fazer-login
       requestBody:
         content:
           application/json:
@@ -25,6 +24,30 @@ paths:
                     type: string
         400:
           description: Login ou senha invalidos
+  /auth/register:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DadosLogin'
+      responses:
+        200:
+          description: Usuario registrado com sucesso
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+        400:
+          description: Usuario já registrado
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
   /chamados:
     get:
       description: Listar chamados realizados pelo usuario logado

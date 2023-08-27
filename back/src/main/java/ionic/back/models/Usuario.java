@@ -1,11 +1,11 @@
 package ionic.back.models;
 
+import ionic.back.dto.DTODadosLogin;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 
 @Table(name = "usuarios")
 @Entity(name = "Usuario")
@@ -19,4 +19,9 @@ public class Usuario {
     private Integer id;
     public String email;
     public String senha;
+
+    public Usuario(DTODadosLogin dadosLogin) {
+        this.email = dadosLogin.email();
+        this.senha = dadosLogin.senha();
+    }
 }
