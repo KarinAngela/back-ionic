@@ -1,7 +1,7 @@
-package dto;
+package ionic.back.dto;
 
-import enums.Prioridade;
-import enums.StatusChamado;
+import ionic.back.enums.Prioridade;
+import ionic.back.enums.StatusChamado;
 
 public record DTOChamado(
         String foto_problema,

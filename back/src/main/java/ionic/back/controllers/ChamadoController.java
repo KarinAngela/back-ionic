@@ -1,14 +1,12 @@
-package controllers;
+package ionic.back.controllers;
 
-import dto.DTOCadastroChamado;
-import dto.DTOChamado;
-import models.Chamado;
+import ionic.back.dto.DTOChamado;
+import ionic.back.models.Chamado;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import repositorios.ChamadoRepository;
+import ionic.back.repositorios.ChamadoRepository;
 
 import java.util.List;
 
@@ -40,7 +38,7 @@ public class ChamadoController {
         return chamadoRepository.getReferenceById(id);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @Transactional
     public Chamado updateChamado(@PathVariable Integer id, @RequestBody DTOChamado dadosChamado) {
         Chamado chamado = chamadoRepository.getReferenceById(id);
@@ -49,7 +47,7 @@ public class ChamadoController {
         return chamadoRepository.save(chamado);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @Transactional
     public void deleteChamado(@PathVariable Integer id) {
         chamadoRepository.deleteById(id);

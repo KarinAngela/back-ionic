@@ -1,6 +1,6 @@
-package repositorios;
+package ionic.back.repositorios;
 
-import models.Chamado;
+import ionic.back.models.Chamado;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChamadoRepository extends JpaRepository<Chamado, Integer> {

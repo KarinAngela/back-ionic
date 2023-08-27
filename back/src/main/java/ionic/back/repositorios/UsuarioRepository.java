@@ -1,6 +1,6 @@
-package repositorios;
+package ionic.back.repositorios;
 
-import models.Usuario;
+import ionic.back.models.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {

@@ -1,9 +1,9 @@
-package models;
+package ionic.back.models;
 
 
-import dto.DTOChamado;
-import enums.Prioridade;
-import enums.StatusChamado;
+import ionic.back.dto.DTOChamado;
+import ionic.back.enums.Prioridade;
+import ionic.back.enums.StatusChamado;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

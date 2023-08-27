@@ -1,4 +1,4 @@
-package models;
+package ionic.back.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
