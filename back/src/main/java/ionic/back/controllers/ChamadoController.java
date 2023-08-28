@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.*;
 import ionic.back.repositorios.ChamadoRepository;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 
 
 @RestController
 @Controller
 @RequestMapping("/chamados")
+@CrossOrigin(origins = "http://localhost:8100")
 public class ChamadoController {
 
     @Autowired
@@ -48,49 +50,87 @@ public class ChamadoController {
 
     @GetMapping
     @Transactional
-    public List<Chamado> getChamadoList(@RequestHeader("Authorization") String authorization) throws HttpClientErrorException {
-        Usuario usuario = getUsuarioFromToken(authorization);
-        return chamadoRepository.findAllByIdUsuario(usuario.getId());
+    public ResponseEntity<?> getChamadoList(@RequestHeader("Authorization") String authorization) throws HttpClientErrorException {
+        try {
+            Usuario usuario = getUsuarioFromToken(authorization);
+            return new ResponseEntity<List<Chamado>>(
+                    chamadoRepository.findAllByIdUsuario(usuario.getId()),
+                    HttpStatus.OK
+            );
+        } catch (HttpClientErrorException e) {
+            return new ResponseEntity<String>(e.getMessage(), e.getStatusCode());
+        }
     }
 
     @PostMapping
     @Transactional
-    public Chamado createChamado(@RequestHeader("Authorization") String authorization, @RequestBody DTOChamado dadosChamado) {
-        Usuario usuario = getUsuarioFromToken(authorization);
-        return chamadoRepository.save(new Chamado(dadosChamado, usuario.getId()));
+    public ResponseEntity<?> createChamado(@RequestHeader("Authorization") String authorization, @RequestBody DTOChamado dadosChamado) {
+        try {
+            Usuario usuario = getUsuarioFromToken(authorization);
+            return new ResponseEntity<Chamado>(
+                    chamadoRepository.save(new Chamado(dadosChamado, usuario.getId())),
+                    HttpStatus.OK
+            );
+        } catch (HttpClientErrorException e) {
+            return new ResponseEntity<String>(e.getMessage(), e.getStatusCode());
+        }
     }
 
 
     @GetMapping("/{id}")
     @Transactional
-    public Chamado getChamadoById(@RequestHeader("Authorization") String authorization, @PathVariable Integer id) {
-        Usuario usuario = getUsuarioFromToken(authorization);
-        Chamado chamado = chamadoRepository.getReferenceById(id);
-        if (chamado == null) {
-            throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Chamado não encontrado");
-        }
+    public ResponseEntity<?> getChamadoById(@RequestHeader("Authorization") String authorization, @PathVariable Integer id) {
+        try {
+            Usuario usuario = getUsuarioFromToken(authorization);
+            Chamado chamado = chamadoRepository.getReferenceById(id);
+            if (chamado == null) {
+                return new ResponseEntity<>("Chamado não encontrado", HttpStatus.NOT_FOUND);
+            }
 
-        return chamado;
+            return new ResponseEntity<Chamado>(
+                    chamado,
+                    HttpStatus.OK
+            );
+        } catch (HttpClientErrorException e) {
+            return new ResponseEntity<String>(e.getMessage(), e.getStatusCode());
+        }
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public Chamado updateChamado(@RequestHeader("Authorization") String authorization, @PathVariable Integer id, @RequestBody DTOChamado dadosChamado) {
-        Usuario usuario = getUsuarioFromToken(authorization);
-        Chamado chamado = chamadoRepository.getReferenceById(id);
-        if (chamado == null) {
-            throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Chamado não encontrado");
-        }
+    public ResponseEntity<?> updateChamado(@RequestHeader("Authorization") String authorization, @PathVariable Integer id, @RequestBody DTOChamado dadosChamado) {
+        try {
+            Usuario usuario = getUsuarioFromToken(authorization);
+            Chamado chamado = chamadoRepository.getReferenceById(id);
+            if (chamado == null) {
+                return new ResponseEntity<String>("Chamado não encontrado", HttpStatus.NOT_FOUND);
+            }
 
-        chamado.update(dadosChamado, usuario.getId());
-        return chamadoRepository.save(chamado);
+            chamado.update(dadosChamado, usuario.getId());
+            return new ResponseEntity<Chamado>(
+                    chamadoRepository.save(chamado),
+                    HttpStatus.OK
+            );
+        } catch (HttpClientErrorException e) {
+            return new ResponseEntity<String>(e.getMessage(), e.getStatusCode());
+        }
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void deleteChamado(@RequestHeader("Authorization") String authorization, @PathVariable Integer id) {
-        Usuario usuario = getUsuarioFromToken(authorization);
-        chamadoRepository.deleteById(id);
+    public ResponseEntity<?> deleteChamado(@RequestHeader("Authorization") String authorization, @PathVariable Integer id) {
+        try {
+            Usuario usuario = getUsuarioFromToken(authorization);
+            Chamado chamado = chamadoRepository.getReferenceById(id);
+            if (chamado == null) {
+                return new ResponseEntity<String>("Chamado não encontrado", HttpStatus.NOT_FOUND);
+            }
+
+            chamadoRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (HttpClientErrorException e) {
+            return new ResponseEntity<String>(e.getMessage(), e.getStatusCode());
+        }
     }
 
 }
